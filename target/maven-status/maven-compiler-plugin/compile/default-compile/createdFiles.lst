@@ -1,4 +1,4 @@
 factory\car\resource\CarResource.class
-factory\car\service\RestApplication.class
+factory\car\resource\RestApplication.class
 factory\car\entity\Car.class
 factory\car\service\CarService.class
