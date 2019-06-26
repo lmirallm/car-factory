@@ -6,12 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "cars")
+@Table(name = "car")
 public class Car {
 
 	@Id
@@ -27,6 +28,15 @@ public class Car {
 	private Timestamp created_at;
 	@Column(name = "last_updated")
 	private Timestamp last_updated;
+	
+	@PrePersist
+	protected void onRegistration() {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		this.created_at=timestamp;
+		this.last_updated=timestamp;
+		this.registration=timestamp;
+		
+	}
 	
 	public Car() {
 		
