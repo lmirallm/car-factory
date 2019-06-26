@@ -1,15 +1,13 @@
 package factory.car.entity;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "car")
@@ -35,7 +33,7 @@ public class Car {
 		this.created_at=timestamp;
 		this.last_updated=timestamp;
 		this.registration=timestamp;
-		
+		this.id=UUID.randomUUID().toString();
 	}
 	
 	public Car() {
