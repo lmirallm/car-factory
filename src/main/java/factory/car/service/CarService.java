@@ -15,7 +15,7 @@ public class CarService {
 	private EntityManager em;
 
 	public List<Car> getCars() {
-		return (List<Car>) em.createQuery("SELECT c FROM Cars c").getResultList();
+		return (List<Car>) em.createQuery("SELECT c FROM Car c").getResultList();
 	}
 
 	public Car getCar(String id) {
