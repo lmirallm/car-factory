@@ -32,9 +32,16 @@ public class CarService {
 		}
 	}
 
-	public boolean updateCar(Car user_car) {
-		if (em.find(Car.class, user_car.getId()) != null) {
-			em.merge(user_car);
+	public boolean updateCar(Car user_car,String id) {
+		Car dbCar=em.find(Car.class,id);
+		if (dbCar != null) {
+			if(user_car.getBrand()!=null && user_car.getBrand() != dbCar.getBrand())
+				dbCar.setBrand(user_car.getBrand());
+			if(user_car.getCountry()!=null && user_car.getCountry() != dbCar.getCountry())
+				dbCar.setCountry(user_car.getCountry());
+			if(user_car.getRegistration()!=null && user_car.getRegistration() != dbCar.getRegistration())
+				dbCar.setRegistration(user_car.getRegistration());
+			em.flush();
 			return true;
 		} else {
 			return false;
@@ -42,8 +49,10 @@ public class CarService {
 	}
 	
 	public boolean deleteCar(String id) {
-		if (em.find(Car.class, id) != null) {
-			em.remove(id);
+		Car dbCar=em.find(Car.class, id);
+		if (dbCar != null) {
+			em.remove(dbCar);
+			em.flush();
 			return true;
 		} else {
 			return false;
