@@ -33,21 +33,10 @@ public class Car {
 
 	@PrePersist
 	protected void onRegistration() {
-<<<<<<< Updated upstream
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		this.created_at=timestamp;
-		this.last_updated=timestamp;
-		this.registration=timestamp;
-<<<<<<< Updated upstream
-		this.id=UUID.randomUUID().toString();
-=======
-		
->>>>>>> Stashed changes
-=======
+
 		this.created_at = LocalDateTime.now();
 		this.last_updated =LocalDateTime.now();
 		this.id = UUID.randomUUID().toString();
->>>>>>> Stashed changes
 	}
 
 	@PreUpdate
