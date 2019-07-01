@@ -20,6 +20,12 @@ import javax.ws.rs.core.Response.Status;
 
 import factory.car.entity.Car;
 import factory.car.service.CarService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Example;
+import io.swagger.annotations.ExampleProperty;
 
 @Path("cars")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,6 +36,8 @@ public class CarResource {
 	private CarService carService;
 
 	@GET
+	@ApiOperation(value = "Return all cars", response = Car.class, responseContainer = "List")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "car list", response = Car.class) })
 	public Response getAllCars() {
 		final GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(carService.getCars()) {
 		};
@@ -38,7 +46,12 @@ public class CarResource {
 
 	@GET
 	@Path("{id}")
-	public Response getCarById(@PathParam("id") final String id) {
+	@ApiOperation(value = "Return car by its ID", response = Car.class, responseContainer = "JSON")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "requested car", response = Car.class),
+			@ApiResponse(code = 400, message = "bad request", response = String.class, examples = @Example(value = {
+					@ExampleProperty(value = "Could not get car") })) })
+	public Response getCarById(
+			@ApiParam(value = "id of the car that need to be returned", required = true) @PathParam("id") final String id) {
 		Car carFromDB = carService.getCar(id);
 		if (carFromDB != null) {
 			logger.info("Car with ID:" + carFromDB.getId() + " whose brand is " + carFromDB.getBrand() + " and country "
@@ -51,6 +64,10 @@ public class CarResource {
 	}
 
 	@POST
+	@ApiOperation(value = "Create cars", response = Car.class, responseContainer = "JSON")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Car created", response = Car.class),
+			@ApiResponse(code = 400, message = "bad request", response = String.class, examples = @Example(value = {
+					@ExampleProperty(value = "Could not create car") })) })
 	public Response createCar(Car car) {
 		if (carService.createCar(car)) {
 			logger.info("Car with ID" + car.getId() + " whose brand is " + car.getBrand() + " and country "
@@ -65,7 +82,11 @@ public class CarResource {
 
 	@PUT
 	@Path("{id}")
-	public Response updateCar(Car car, @PathParam("id") String id) {
+	@ApiOperation(value = "Update car by its ID", response = Car.class, responseContainer = "JSON")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Car updated", response = Car.class),
+			@ApiResponse(code = 400, message = "bad request", response = String.class, examples = @Example(value = {
+					@ExampleProperty(value = "Could not update car") })) })
+	public Response updateCar(Car car,@ApiParam(value = "id of the car that need to be updated", required = true) @PathParam("id") String id) {
 		if (carService.updateCar(car, id)) {
 			logger.info("Car with ID" + car.getId() + " whose brand is " + car.getBrand() + " and country "
 					+ car.getCountry() + " has been updated");
@@ -78,7 +99,11 @@ public class CarResource {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteCar(@PathParam("id") final String id) {
+	@ApiOperation(value = "Delete car by its ID from DB", response = Car.class, responseContainer = "JSON")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Car deleted", response = Car.class),
+			@ApiResponse(code = 400, message = "bad request", response = String.class, examples = @Example(value = {
+					@ExampleProperty(value = "Could not delete car") })) })
+	public Response deleteCar( @ApiParam(value="id of the car that need to be deleted",required=true) @PathParam("id") final String id) {
 		if (carService.deleteCar(id)) {
 			return Response.status(Status.OK).entity("Car with ID " + id + " deleted correctly").build();
 		} else {
