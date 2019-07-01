@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PastOrPresent;
 
 @Entity
@@ -20,11 +21,14 @@ public class Car {
 	@Id
 	@Column(name = "id")
 	private String id;
+	@NotEmpty(message = "Brand cannot be null")
 	@Column(name = "brand")
 	private String brand;
 	@PastOrPresent(message ="Date can not be a future one ")
+	@NotEmpty(message = "Registration cannot be null")
 	@Column(name = "registration",columnDefinition="Timestamp")
 	private LocalDateTime registration;
+	@NotEmpty(message = "Country cannot be null")
 	@Column(name = "country" )
 	private String country;
 	@Column(name = "created_at", updatable=false,columnDefinition="Timestamp")
