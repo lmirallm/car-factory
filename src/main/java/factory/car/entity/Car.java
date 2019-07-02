@@ -2,10 +2,11 @@ package factory.car.entity;
 
 
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
@@ -21,40 +22,38 @@ public class Car {
 	@Id
 	@Column(name = "id")
 	private String id;
-	@NotEmpty(message = "Brand cannot be null")
+//	@NotEmpty(message = "Brand cannot be null")
 	@Column(name = "brand")
 	private String brand;
-	@PastOrPresent(message ="Date can not be a future one ")
-	@NotEmpty(message = "Registration cannot be null")
-	@Column(name = "registration",columnDefinition="Timestamp")
-	private LocalDateTime registration;
-	@NotEmpty(message = "Country cannot be null")
+//	@PastOrPresent(message ="Date can not be a future one ")
+//	@NotEmpty(message = "Registration cannot be null")
+	@Column(name = "registration")
+//	@Convert(converter = TimestampConverter.class)
+	private Timestamp registration;
+//	@NotEmpty(message = "Country cannot be null")
 	@Column(name = "country" )
 	private String country;
-	@Column(name = "created_at", updatable=false,columnDefinition="Timestamp")
-	private LocalDateTime created_at;
-	@Column(name = "last_updated",columnDefinition="Timestamp")
-	private LocalDateTime last_updated;
+	@Column(name = "created_at")
+	private Timestamp created_at;
+	@Column(name = "last_updated")
+	private Timestamp last_updated;
 
 	@PrePersist
 	protected void onRegistration() {
-
-		this.created_at = LocalDateTime.now();
-		this.last_updated =LocalDateTime.now();
+		 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		this.created_at = timestamp;
+		this.last_updated =timestamp;
 		this.id = UUID.randomUUID().toString();
 	}
 
 	@PreUpdate
 	protected void onUpdate() {
-		this.last_updated = LocalDateTime.now();
+		 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		this.last_updated = timestamp;
 	}
 
 	public Car() {
 
-	}
-
-	public LocalDateTime getCreated_at() {
-		return created_at;
 	}
 
 	/**
@@ -65,8 +64,8 @@ public class Car {
 	 * @param created_at
 	 * @param last_updated
 	 */
-	public Car(String id, String brand, LocalDateTime registration, String country, LocalDateTime created_at,
-			LocalDateTime last_updated) {
+	public Car(String id, String brand, Timestamp registration, String country, Timestamp created_at,
+			Timestamp last_updated) {
 		this.id = id;
 		this.brand = brand;
 		this.registration = registration;
@@ -91,11 +90,11 @@ public class Car {
 		this.brand = brand;
 	}
 
-	public LocalDateTime getRegistration() {
+	public Timestamp getRegistration() {
 		return registration;
 	}
 
-	public void setRegistration(LocalDateTime registration) {
+	public void setRegistration(Timestamp registration) {
 		this.registration = registration;
 	}
 
@@ -107,11 +106,11 @@ public class Car {
 		this.country = country;
 	}
 
-	public void setCreated_at(LocalDateTime created_at) {
+	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
 
-	public void setLast_updated(LocalDateTime last_updated) {
+	public void setLast_updated(Timestamp last_updated) {
 		this.last_updated = last_updated;
 	}
 

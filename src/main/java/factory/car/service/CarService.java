@@ -1,6 +1,5 @@
 package factory.car.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import factory.car.entity.Car;
-import logger.MyLogger;
 @Stateless
 public class CarService {
 	private final static Logger logger = Logger.getLogger(CarService.class.getName());
